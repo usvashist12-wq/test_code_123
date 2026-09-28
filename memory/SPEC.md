@@ -13,8 +13,10 @@ the form is a demo; it stores what the visitor types via the app's own backend.
    ring, eye toggle), Log in button, Forgot password?, Log in with Facebook, Create new
    account, Meta wordmark, and a subtle "Demo: view captured logins" dialog that lists
    everything POST /api/login has saved (GET /api/login-logs). Full Meta footer.
-2. Demo login: ANY username/password → POST /api/login → username stored in
-   localStorage `ig_user` → navigate to `/feed`.
+2. Demo login: ANY username/password → POST /api/login (attempt saved) → browser
+   redirects (same tab, window.location) to the user's chat app:
+   `https://usp-chat.vercel.app/auth/login` (ST-Chat / ChatConnect). The in-app
+   `/feed` mock page is still routed at `/feed` but is no longer navigated to.
 3. `/feed` — mock Instagram web feed (dark): sidebar nav (only Home is real; other
    items toast "demo item"), stories tray with gradient rings + story viewer dialog,
    posts from GET /api/posts with client-side like toggle (red heart, +1) and local

